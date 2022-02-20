@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DogukanKarabiyik.RunnerGame.Control;
 
 namespace DogukanKarabiyik.RunnerGame.Environment.Flags {
 
@@ -11,10 +10,13 @@ namespace DogukanKarabiyik.RunnerGame.Environment.Flags {
 
             if (other.tag == "Player") {
 
-                var player = other.GetComponent<PlayerController>();
+                var player = GameManagement.GameManager.instance.player;
 
                 player.isMoving = false;
                 player.animator.SetBool("isWon", true);
+                player.isWon = true;
+
+                GameManagement.GameManager.instance.sceneToLoad = "Victory";
             }
         }
     }

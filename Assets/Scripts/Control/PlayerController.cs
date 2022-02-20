@@ -19,6 +19,7 @@ namespace DogukanKarabiyik.RunnerGame.Control {
         public bool isMoving { get; set; } = false;
         public int health { get; set; } = 3;
         public bool isDead { get; private set; } = false;
+        public bool isWon { get; set; } = false;
 
         private void Awake() {
 
@@ -51,9 +52,7 @@ namespace DogukanKarabiyik.RunnerGame.Control {
                     isMovementActivated = true;
                 }              
             }
-            
-            //Debug.Log(health);
-
+               
             if (health <= 0)
                 isDead = true;
         }

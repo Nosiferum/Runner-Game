@@ -43,3 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e09167c92f58e48b38421da1e7fc1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  localScoreText: {fileID: 4428948350797528799, guid: ce637098509585d47b574725bce7fea1, type: 3}
+  healthText: {fileID: 9148515009125350263, guid: ab225b7c459c8614d8c45931bf7b1763, type: 3}
+  scoreText: {fileID: 350601245062213579, guid: 9f707c8276f75404c93e163c5c8a4fb8, type: 3}
+  localScoreVictoryText: {fileID: 7750359114319369781, guid: 1baf7e23ca5ebd848b4d21c52b9e687f, type: 3}
+  sceneNameText: {fileID: 661924924462658039, guid: 1553e79219706a847b0a7bca90e4b831, type: 3}
+  localScoreLostText: {fileID: 5964736931438298116, guid: ea7658eb3265c794f803ef8f7d41b3e4, type: 3}

@@ -12,14 +12,14 @@ namespace DogukanKarabiyik.RunnerGame.Environment.Collectables {
 
                 if (gameObject.tag == "Diamond") {
 
-                    GameManagement.GameManager.instance.score += 5;
+                    GameManagement.GameManager.instance.localScore += 5;
                     Destroy(gameObject);
                 }
                    
 
                 else if (gameObject.tag == "Diamond5side") {
 
-                    GameManagement.GameManager.instance.score += 10;
+                    GameManagement.GameManager.instance.localScore += 10;
                     Destroy(gameObject);
                 }                  
             }
