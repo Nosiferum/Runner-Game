@@ -12,9 +12,13 @@ namespace DogukanKarabiyik.RunnerGame.Control {
         [SerializeField]
         private float movingSpeed = 5f;
 
+        private bool isMovementActivated = false;
+
         public Rigidbody rb { get; private set; }
         public Animator animator { get; private set; }
         public bool isMoving { get; set; } = false;
+        public int health { get; set; } = 3;
+        public bool isDead { get; private set; } = false;
 
         private void Awake() {
 
@@ -38,11 +42,20 @@ namespace DogukanKarabiyik.RunnerGame.Control {
 
         private void Update() {
 
-            if (Input.GetKey(KeyCode.Mouse0)) {
-                
-                animator.SetBool("isRunning", true);
-                isMoving = true;
-            }                
+            if (!isMovementActivated) {
+
+                if (Input.GetKey(KeyCode.Mouse0)) {
+
+                    animator.SetBool("isRunning", true);
+                    isMoving = true;
+                    isMovementActivated = true;
+                }              
+            }
+            
+            //Debug.Log(health);
+
+            if (health <= 0)
+                isDead = true;
         }
     }
 }
