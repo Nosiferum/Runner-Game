@@ -3,7 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Diamond
+  - Diamond5side
+  - Local Score
+  - Scene Name
+  - Health
   layers:
   - Default
   - TransparentFX
