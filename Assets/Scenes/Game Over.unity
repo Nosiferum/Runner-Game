@@ -251,8 +251,8 @@ Camera:
   m_GameObject: {fileID: 428973582}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.16981131, g: 0.1464222, b: 0.1464222, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -268,7 +268,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -548,7 +548,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5985602174849240730, guid: d14f141d96af3e441b165aefe3026475, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -245
+      value: -168.5531
       objectReference: {fileID: 0}
     - target: {fileID: 5985602174849240730, guid: d14f141d96af3e441b165aefe3026475, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -561,6 +561,18 @@ PrefabInstance:
     - target: {fileID: 5985602174849240730, guid: d14f141d96af3e441b165aefe3026475, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8233740206579763931, guid: d14f141d96af3e441b165aefe3026475, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8233740206579763931, guid: d14f141d96af3e441b165aefe3026475, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8233740206579763931, guid: d14f141d96af3e441b165aefe3026475, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d14f141d96af3e441b165aefe3026475, type: 3}
@@ -646,7 +658,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 440812897521654404, guid: ea7658eb3265c794f803ef8f7d41b3e4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -111
+      value: -34.5531
       objectReference: {fileID: 0}
     - target: {fileID: 440812897521654404, guid: ea7658eb3265c794f803ef8f7d41b3e4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -802,6 +814,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.592, y: 3.5531}
+  m_AnchoredPosition: {x: -0.592, y: 80}
   m_SizeDelta: {x: 423.8405, y: 237.1259}
   m_Pivot: {x: 0.5, y: 0.5}

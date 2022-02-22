@@ -11,7 +11,7 @@ namespace DogukanKarabiyik.RunnerGame.Environment.Obstacles {
 
             if (other.tag == "Player") {
 
-                GameManagement.GameManager.instance.player.health -= 1;
+                other.GetComponent<PlayerController>().health -= 1;
                 Destroy(gameObject);                
             }                             
        }

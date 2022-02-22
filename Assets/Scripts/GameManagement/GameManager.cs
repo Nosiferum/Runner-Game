@@ -27,17 +27,21 @@ namespace DogukanKarabiyik.RunnerGame.GameManagement {
         [SerializeField]
         private TextMeshProUGUI localScoreLostText;
 
-
         private static GameManager _instance;
         private int score;
         private bool isScoreAdded = false;   
-        private bool isEndScreen = true;
+        private bool isEndingScreen = false;
+        //private bool isVictoryScreen = false;
+        private bool isGameScreen = true;
+        private bool isRestarted = false;
         private float timer = 3;
         private string sceneName;
         
         public PlayerController player { get; private set; }
-        public int localScore { get; set; }
+        public int localScore { get; set; } = 0;
         public string sceneToLoad { get; set; }
+        public bool isDead { get; set; } = false;
+        public bool isWon { get; set; } = false;
 
         public static GameManager instance {
             get {
@@ -55,12 +59,12 @@ namespace DogukanKarabiyik.RunnerGame.GameManagement {
         }
 
         private void Update() {
-           
-           // RestartGame();            
+
+            FindPlayer();
             HandleScore();
             GetSceneName();
             InitializeUI();
-            LoadNextScene();
+            LoadNextScene();           
         }
 
         private void InitializeGameManager() {
@@ -76,64 +80,90 @@ namespace DogukanKarabiyik.RunnerGame.GameManagement {
 
         public void RestartGame() {
 
-            if (player.isDead)
-                UnityEngine.SceneManagement.SceneManager.LoadScene(0);
-        }
+            isScoreAdded = false;
+            isEndingScreen = false;
+            //isVictoryScreen = false;
+            isGameScreen = true;
+            isDead = false;
+            isWon = false;
+            isRestarted = true;
+
+            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);         
+    }
 
         private void InitializeUI() {
 
-            localScoreText.text = "Score: " + localScore;
-            healthText.text = "Health: " + player.health;
+            if (isGameScreen) {
+
+                localScoreText = GameObject.FindGameObjectWithTag("Local Score").GetComponent<TextMeshProUGUI>();
+                healthText = GameObject.FindGameObjectWithTag("Health").GetComponent<TextMeshProUGUI>();
+                sceneNameText = GameObject.FindGameObjectWithTag("Scene Name").GetComponent<TextMeshProUGUI>();
+
+                healthText.text = "Health: " + player.health;
+                localScoreText.text = "Score: " + localScore;
+                sceneNameText.text = "Level: " + sceneName;
+            }
+            
             scoreText.text = "Your total score: " + score;
             localScoreVictoryText.text = "You have collected: " + localScore + " points!";
             localScoreLostText.text = "You have collected and lost: " + localScore + " points!";
-            sceneNameText.text = "Level: " + sceneName;
-
         }
 
         private void HandleScore() {
 
-            if (!isEndScreen && isScoreAdded) {
-
-                localScore = 0;
-                isScoreAdded = false;
+            if (isRestarted) {          
+               
+                localScore = 0;             
+                isRestarted = false;
             }
                 
-            if (player.isWon && !isScoreAdded) {
-
+            if (isWon && !isScoreAdded) {
+              
                 score += localScore;
-                isScoreAdded = true;
+                isScoreAdded = true;            
             }
         }
 
         private void LoadNextScene() {
 
-            if (player.isWon) {
+            if (isWon && isGameScreen) {
 
                 timer -= Time.deltaTime;
 
                 if (timer <= 0) {
 
-                    player.isWon = false;
+                    isGameScreen = false;
+                    //isVictoryScreen = true;
 
-                    UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);             
-                }             
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);                  
+               }             
             }
             
-            if (player.isDead && isEndScreen) {
+            if (isDead) {
 
                 sceneToLoad = "Game Over";
-                UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);
 
-                isEndScreen = false;
+                isDead = false;
+                isEndingScreen = true;
+                isGameScreen = false;
 
-            }
+                UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);                              
+            }              
         }
 
         private void GetSceneName() {
 
-            var sceneRawName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            sceneName = Regex.Match(sceneRawName, @"\d+").Value;               
+            if (isGameScreen) {
+
+                var sceneRawName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+                sceneName = Regex.Match(sceneRawName, @"\d+").Value;
+            }                        
+        }
+
+        private void FindPlayer() {
+
+            if (player == null && !isEndingScreen)
+                player = FindObjectOfType<PlayerController>();
         }
     }
 }
