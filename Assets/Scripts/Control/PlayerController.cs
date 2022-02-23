@@ -18,9 +18,7 @@ namespace DogukanKarabiyik.RunnerGame.Control {
         public Animator animator { get; private set; }
         public bool isMoving { get; set; } = false;
         public int health { get; set; } = 3;
-        //public bool isDead { get; private set; } = false;
-        //public bool isWon { get; set; } = false;
-
+        
         private void Awake() {
 
             animator = GetComponent<Animator>();
@@ -51,13 +49,10 @@ namespace DogukanKarabiyik.RunnerGame.Control {
                     isMoving = true;
                     isMovementActivated = true;
                 }              
-            }
-
-            //Debug.Log(health);
-               
-            if (health <= 0) 
-                GameManagement.GameManager.instance.isDead = true;
+            } 
             
+            if (health <= 0) 
+                GameManagement.GameManager.instance.isPlayerDead = true; 
         }
     }
 }
