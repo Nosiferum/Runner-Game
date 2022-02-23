@@ -35,20 +35,22 @@ namespace DogukanKarabiyik.RunnerGame.GameManagement {
 
         private static GameManager _instance;
         private int score;
+        private int lastLevelIndex = 2;
+        private float winTimer = 3;
         private bool isScoreAdded = false;   
         private bool isEndingScreen = false;
         private bool isGameScreen = false;
         private bool isMenuScreen = true;
         private bool isRestarted = false;
         private bool isLastLevel = false;
-        private float winTimer = 3;
         private string sceneName;
         
         public PlayerController player { get; private set; }
         public int localScore { get; set; } = 0;
         public string sceneToLoad { get; set; }
-        public bool isDead { get; set; } = false;
-        public bool isWon { get; set; } = false;
+        public bool isPlayerDead { get; set; } = false;
+        public bool isPlayerWon { get; set; } = false;
+        public int levelIndex { get; set; } = 1;
 
         public static GameManager instance {
             get {
@@ -65,14 +67,9 @@ namespace DogukanKarabiyik.RunnerGame.GameManagement {
             player = FindObjectOfType<PlayerController>();
         }
 
-        private void Start() {
-            
-            GetSceneName();
-            InitializeUI();
-        }
-
         private void Update() {
 
+            QuitGame();
             FindPlayer();
             HandleScore();
             GetSceneName();
@@ -96,11 +93,11 @@ namespace DogukanKarabiyik.RunnerGame.GameManagement {
             isScoreAdded = false;
             isEndingScreen = false;
             isGameScreen = true;
-            isDead = false;
-            isWon = false;
+            isPlayerDead = false;
+            isPlayerWon = false;
             isRestarted = true;
             winTimer = 3;
-
+            
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);         
     }
 
@@ -110,6 +107,12 @@ namespace DogukanKarabiyik.RunnerGame.GameManagement {
             isMenuScreen = false;
 
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);
+        }
+
+        private void QuitGame() {
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+                Application.Quit();
         }
 
         private void InitializeUI() {
@@ -141,7 +144,7 @@ namespace DogukanKarabiyik.RunnerGame.GameManagement {
                 isRestarted = false;
             }
                 
-            if (isWon && !isScoreAdded) {
+            if (isPlayerWon && !isScoreAdded) {
               
                 score += localScore;
                 isScoreAdded = true;            
@@ -150,37 +153,31 @@ namespace DogukanKarabiyik.RunnerGame.GameManagement {
 
         private void LoadNextScene() {
 
-            if (isWon && isGameScreen && isLastLevel) {
+            if (isPlayerWon && isGameScreen && !isLastLevel) {
 
-                sceneToLoad = "Victory";
+                sceneToLoad = "Level Victory";
+
                 winTimer -= Time.deltaTime;
 
                 if (winTimer <= 0) {
 
                     isGameScreen = false;
-                   
-                    UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);                  
-               }             
-            }
+                    
+                    if (lastLevelIndex == levelIndex) {
 
-            if (isWon && isGameScreen && !isLastLevel) {
-
-                sceneToLoad = "Level2";
-                winTimer -= Time.deltaTime;
-
-                if (winTimer <= 0) {
-
-                    isLastLevel = true;
-
-                    RestartGame();
+                        isLastLevel = true;
+                        sceneToLoad = "Victory";
+                    }
+                    
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);
                 }
             }
-
-            if (isDead) {
+        
+            if (isPlayerDead) {
 
                 sceneToLoad = "Game Over";
 
-                isDead = false;
+                isPlayerDead = false;
                 isEndingScreen = true;
                 isGameScreen = false;
 
@@ -201,7 +198,6 @@ namespace DogukanKarabiyik.RunnerGame.GameManagement {
                 var sceneRawName = "Level1";
                 sceneName = Regex.Match(sceneRawName, @"\d+").Value;
             }
-
         }
 
         private void FindPlayer() {

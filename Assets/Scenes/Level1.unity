@@ -11222,11 +11222,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6354812946802715950, guid: 68c8bc9d3f13f424cb4ded96d770d5e6, type: 3}
       propertyPath: movingSpeed
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6354812946802715950, guid: 68c8bc9d3f13f424cb4ded96d770d5e6, type: 3}
       propertyPath: runnigSpeed
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68c8bc9d3f13f424cb4ded96d770d5e6, type: 3}

@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runnigSpeed: 10
-  movingSpeed: 8
+  movingSpeed: 10
 --- !u!54 &1976564119219460604
 Rigidbody:
   m_ObjectHideFlags: 0
