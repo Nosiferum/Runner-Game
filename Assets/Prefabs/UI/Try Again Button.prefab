@@ -258,7 +258,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 9170942210553608568}
         m_TargetAssemblyTypeName: DogukanKarabiyik.RunnerGame.UI.ButtonHandler, Assembly-CSharp
-        m_MethodName: LoadNextScene
+        m_MethodName: RestartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

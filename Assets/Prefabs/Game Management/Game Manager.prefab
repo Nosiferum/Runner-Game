@@ -49,3 +49,5 @@ MonoBehaviour:
   localScoreVictoryText: {fileID: 7750359114319369781, guid: 1baf7e23ca5ebd848b4d21c52b9e687f, type: 3}
   sceneNameText: {fileID: 661924924462658039, guid: 1553e79219706a847b0a7bca90e4b831, type: 3}
   localScoreLostText: {fileID: 5964736931438298116, guid: ea7658eb3265c794f803ef8f7d41b3e4, type: 3}
+  startSceneNameText: {fileID: 4057080179087450915, guid: b7eb7bb29c41f724789961438cb670b1, type: 3}
+  startScoreText: {fileID: 6320658689948012314, guid: d72812ca21ab8ac4c8ac538c29ffa03f, type: 3}

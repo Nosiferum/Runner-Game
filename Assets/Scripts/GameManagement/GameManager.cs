@@ -27,14 +27,21 @@ namespace DogukanKarabiyik.RunnerGame.GameManagement {
         [SerializeField]
         private TextMeshProUGUI localScoreLostText;
 
+        [SerializeField]
+        private TextMeshProUGUI startSceneNameText;
+
+        [SerializeField]
+        private TextMeshProUGUI startScoreText;
+
         private static GameManager _instance;
         private int score;
         private bool isScoreAdded = false;   
         private bool isEndingScreen = false;
-        //private bool isVictoryScreen = false;
-        private bool isGameScreen = true;
+        private bool isGameScreen = false;
+        private bool isMenuScreen = true;
         private bool isRestarted = false;
-        private float timer = 3;
+        private bool isLastLevel = false;
+        private float winTimer = 3;
         private string sceneName;
         
         public PlayerController player { get; private set; }
@@ -56,6 +63,12 @@ namespace DogukanKarabiyik.RunnerGame.GameManagement {
 
             InitializeGameManager();
             player = FindObjectOfType<PlayerController>();
+        }
+
+        private void Start() {
+            
+            GetSceneName();
+            InitializeUI();
         }
 
         private void Update() {
@@ -82,16 +95,27 @@ namespace DogukanKarabiyik.RunnerGame.GameManagement {
 
             isScoreAdded = false;
             isEndingScreen = false;
-            //isVictoryScreen = false;
             isGameScreen = true;
             isDead = false;
             isWon = false;
             isRestarted = true;
+            winTimer = 3;
 
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);         
     }
 
+        public void StartGame() {
+
+            isGameScreen = true;
+            isMenuScreen = false;
+
+            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);
+        }
+
         private void InitializeUI() {
+
+            startSceneNameText.text = "You are on level: " + sceneName;
+            startScoreText.text = "Your total score is: " + score;
 
             if (isGameScreen) {
 
@@ -103,10 +127,10 @@ namespace DogukanKarabiyik.RunnerGame.GameManagement {
                 localScoreText.text = "Score: " + localScore;
                 sceneNameText.text = "Level: " + sceneName;
             }
-            
+
             scoreText.text = "Your total score: " + score;
             localScoreVictoryText.text = "You have collected: " + localScore + " points!";
-            localScoreLostText.text = "You have collected and lost: " + localScore + " points!";
+            localScoreLostText.text = "You have collected and lost: " + localScore + " points!";          
         }
 
         private void HandleScore() {
@@ -126,19 +150,32 @@ namespace DogukanKarabiyik.RunnerGame.GameManagement {
 
         private void LoadNextScene() {
 
-            if (isWon && isGameScreen) {
+            if (isWon && isGameScreen && isLastLevel) {
 
-                timer -= Time.deltaTime;
+                sceneToLoad = "Victory";
+                winTimer -= Time.deltaTime;
 
-                if (timer <= 0) {
+                if (winTimer <= 0) {
 
                     isGameScreen = false;
-                    //isVictoryScreen = true;
-
+                   
                     UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);                  
                }             
             }
-            
+
+            if (isWon && isGameScreen && !isLastLevel) {
+
+                sceneToLoad = "Level2";
+                winTimer -= Time.deltaTime;
+
+                if (winTimer <= 0) {
+
+                    isLastLevel = true;
+
+                    RestartGame();
+                }
+            }
+
             if (isDead) {
 
                 sceneToLoad = "Game Over";
@@ -148,7 +185,7 @@ namespace DogukanKarabiyik.RunnerGame.GameManagement {
                 isGameScreen = false;
 
                 UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);                              
-            }              
+            } 
         }
 
         private void GetSceneName() {
@@ -157,7 +194,14 @@ namespace DogukanKarabiyik.RunnerGame.GameManagement {
 
                 var sceneRawName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
                 sceneName = Regex.Match(sceneRawName, @"\d+").Value;
-            }                        
+            } 
+            
+            if (isMenuScreen) {
+
+                var sceneRawName = "Level1";
+                sceneName = Regex.Match(sceneRawName, @"\d+").Value;
+            }
+
         }
 
         private void FindPlayer() {

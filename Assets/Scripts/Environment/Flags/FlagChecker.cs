@@ -15,7 +15,6 @@ namespace DogukanKarabiyik.RunnerGame.Environment.Flags {
 
                 player.isMoving = false;
                 player.animator.SetBool("isWon", true);
-                GameManagement.GameManager.instance.sceneToLoad = "Victory";
                 GameManagement.GameManager.instance.isWon = true;
 
                 

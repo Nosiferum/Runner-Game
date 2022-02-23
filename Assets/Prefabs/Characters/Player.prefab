@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bcef841c6def4347a6cbfc9fdcbb9be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runnigSpeed: 5
-  movingSpeed: 5
+  runnigSpeed: 10
+  movingSpeed: 8
 --- !u!54 &1976564119219460604
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -76,7 +76,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.46, y: 1.78, z: 0.33}
+  m_Size: {x: 0.67, y: 1.78, z: 0.33}
   m_Center: {x: 0, y: 0.91, z: 0}
 --- !u!95 &3188815809707049627
 Animator:
