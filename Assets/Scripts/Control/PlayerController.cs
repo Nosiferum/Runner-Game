@@ -1,59 +1,119 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using DogukanKarabiyik.PlatformRunner.Managers;
+using DogukanKarabiyik.RunnerGame.Managers;
 using UnityEngine;
 
-namespace DogukanKarabiyik.RunnerGame.Control {
+namespace DogukanKarabiyik.RunnerGame.Control
+{
+    public class PlayerController : MonoBehaviour
+    {
+        [SerializeField] private float forwardSpeed = 5f;
+        [SerializeField] private float horizontalSpeed = 5f;
 
-    public class PlayerController : MonoBehaviour {
+        public int Health { get; set; } = 3;
+        public int LocalScore { get; set; } = 0;
 
-        [SerializeField]
-        private float runnigSpeed = 5f;
+        public Action OnHealthChanged;
+        public Action OnPlayerDead;
+        public Action OnScoreChanged;
 
-        [SerializeField]
-        private float movingSpeed = 5f;
-
-        private bool isMovementActivated = false;
-      
-        public Rigidbody rb { get; private set; }
-        public Animator animator { get; private set; }
-        public bool isMoving { get; set; } = false;
-        public int health { get; set; } = 3;
+        private Rigidbody _rb;
+        private Animator _animator;
+        private CoinManager _coinManager;
         
-        private void Awake() {
-
-            animator = GetComponent<Animator>();
-            rb = GetComponent<Rigidbody>();
+        private Action _playerState;
+        
+        private void Awake()
+        {
+            _animator = GetComponent<Animator>();
+            _rb = GetComponent<Rigidbody>();
+            
+            _coinManager = FindObjectOfType<CoinManager>();
         }
 
-        private void FixedUpdate() {
+        private void FixedUpdate()
+        {
+            _playerState?.Invoke();
+        }
 
-            if (isMoving) {
+        public void DamagePlayer(int damage)
+        {
+            Health -= Mathf.Min(Health, damage);
+            OnHealthChanged?.Invoke();
 
-                rb.MovePosition(transform.position + (Vector3.forward * runnigSpeed * Time.fixedDeltaTime));
-
-                if (Input.GetKey(KeyCode.Mouse1))
-                    rb.MovePosition(transform.position + (Vector3.forward * runnigSpeed * Time.fixedDeltaTime) + (Vector3.right * movingSpeed * Time.fixedDeltaTime));
-
-                else if (Input.GetKey(KeyCode.Mouse0))
-                    rb.MovePosition(transform.position + (Vector3.forward * runnigSpeed * Time.fixedDeltaTime) + (Vector3.left * movingSpeed * Time.fixedDeltaTime));
+            if (Health == 0)
+            {
+                OnPlayerDead?.Invoke();
+                StaticGameManager.GameFail();
             }
         }
 
-        private void Update() {
+        public void UpdateLocalScore(int score)
+        {
+            LocalScore += score;
+            OnScoreChanged?.Invoke();
+        }
 
-            if (!isMovementActivated) {
+        private void GamePlayState()
+        {
+            Move();
+        }
 
-                if (Input.GetKey(KeyCode.Mouse0)) {
+        private void Move()
+        {
+            _rb.MovePosition(transform.position + (Vector3.forward * (forwardSpeed * Time.fixedDeltaTime)));
 
-                    animator.SetBool("isRunning", true);
-                    isMoving = true;
-                    isMovementActivated = true;
-                }              
-            } 
-            
-            if (health <= 0) 
-                GameManagement.GameManager.instance.isPlayerDead = true; 
+            if (Input.GetMouseButton(0))
+                _rb.MovePosition(transform.position + (Vector3.forward * (forwardSpeed * Time.fixedDeltaTime)) +
+                                 new Vector3(InputManager.Delta.x, 0, 0) * (horizontalSpeed * Time.fixedDeltaTime));
+        }
+        
+        private void SetStartingAnimation()
+        {
+            _animator.SetBool("isRunning", true);
+        }
+
+        private void SetSuccessAnimation()
+        {
+            _animator.SetBool("isWon", true);
+        }
+
+        private void SetFailAnimation()
+        {
+            _animator.SetBool("isRunning", false);
+        }
+
+        private void StartBroadcast()
+        {
+            SetStartingAnimation();
+            _playerState = GamePlayState;
+        }
+
+        private void SuccessBroadcast()
+        {
+            _playerState = null;
+            SetSuccessAnimation();
+            _coinManager.TakeCoin(LocalScore);
+        }
+
+        private void FailBroadcast()
+        {
+            _playerState = null;
+            SetFailAnimation();
+        }
+
+        private void OnEnable()
+        {
+            StaticGameManager.OnLevelStart += StartBroadcast;
+            StaticGameManager.OnLevelSuccess += SuccessBroadcast;
+            StaticGameManager.OnLevelFail += FailBroadcast;
+        }
+
+        private void OnDisable()
+        {
+            StaticGameManager.OnLevelStart -= StartBroadcast;
+            StaticGameManager.OnLevelSuccess -= SuccessBroadcast;
+            StaticGameManager.OnLevelFail -= FailBroadcast;
         }
     }
 }
-
