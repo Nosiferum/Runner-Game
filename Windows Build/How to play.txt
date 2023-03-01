@@ -1,3 +1,0 @@
-Hold left click to go left
-Hold right click to go right
-Press ESC to quit the game
